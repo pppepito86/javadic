@@ -1,13 +1,9 @@
 package org.pesho.mydictionary;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -126,8 +122,8 @@ public class MyDictionary extends JFrame {
 		menuFile.add(menuItemExit);
 		menuBar.add(menuFile);
 		
-		JMenu menuWord = new JMenu("word");
-		JMenuItem menuItemAdd = new JMenuItem("add");
+		JMenu menuWord = new JMenu("Word");
+		JMenuItem menuItemAdd = new JMenuItem("Add");
 		menuItemAdd.addActionListener(new ActionListener() {
 			
 			@Override
@@ -141,6 +137,20 @@ public class MyDictionary extends JFrame {
 		menuWord.add(new JMenuItem("delete"));
 		menuBar.add(menuWord);
 		
+		JMenu menuTest = new JMenu("Test");
+		JMenuItem menuItemTest = new JMenuItem("Test");
+		menuItemTest.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				TestWord testWord = new TestWord();
+				testWord.setVisible(true);				
+			}
+		});
+		menuTest.add(menuItemTest);
+		menuBar.add(menuTest);
+		
 		setJMenuBar(menuBar);
 	}
 	
@@ -151,7 +161,5 @@ public class MyDictionary extends JFrame {
 
 		this.meaning.setText(meaning);
 	}
-	
-	
 	
 }
