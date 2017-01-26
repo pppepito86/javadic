@@ -56,6 +56,20 @@ public class TestWord extends JFrame {
 		c.gridx =3; c.gridy=0;
 		add(new JLabel("Correct:"), c);
 
+		c.gridy = 1;
+		add(correct, c);
+		
+		c.gridx = 4; c.gridy=0;
+		add(new JLabel("Wrong:"), c);
+
+		c.gridy = 1;
+		add(wrong, c);
+		
+		c.gridx = 0; c.gridy=2;
+		add(new JLabel("Word to translate:"), c);
+
+		c.gridx=3;
+		
 	}
 	
 }
