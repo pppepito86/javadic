@@ -8,7 +8,7 @@ import org.pesho.mydictionary.db.WordsCache;
 
 public class Test {
 	
-	private int wordCount;
+	private int wordsCount;
 	private int current;
 	private String[] words;
 
@@ -21,14 +21,14 @@ public class Test {
 		String[] allWords = WordsCache.getInstance().getWords();
 		if (wordCount < 0) wordCount = 1;
 		if (wordCount > allWords.length) wordCount = allWords.length;
-		this.wordCount = wordCount;
+		this.wordsCount = wordCount;
 		List<Integer> indexes = new ArrayList<>(allWords.length);
 		for (int i = 0; i < allWords.length; i++) {
 			indexes.add(i);
 		}
 		Collections.shuffle(indexes);
-		words = new String[this.wordCount];
-		for (int i = 0; i < this.wordCount; i++) {
+		words = new String[this.wordsCount];
+		for (int i = 0; i < this.wordsCount; i++) {
 			words[i] = allWords[indexes.get(i)];
 		}
 	}
@@ -42,7 +42,11 @@ public class Test {
 	}
 
 	public boolean isFinished() {
-		return current >= wordCount - 1;
+		return current >= wordsCount - 1;
+	}
+
+	public int getWordsCount() {
+		return wordsCount;
 	}
 	
 }

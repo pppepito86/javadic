@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.HashMap;
+
+import org.pesho.mydictionary.exceptions.MyDictionaryException;
 
 public class WordsCache {
 	
@@ -14,42 +17,45 @@ public class WordsCache {
 		return INSTANCE;
 	}
 	
-	private String[] w;
-	private HashMap<String, String> words;
+	private String[] words;
+	private HashMap<String, String> wordsWithMeanings;
 	
 	private WordsCache() {
-		words = DBConnection.getWordsWithMeanings();
-		w = DBConnection.getWords();
+		try {
+			wordsWithMeanings = DBConnection.getWordsWithMeanings();
+			words = DBConnection.getWords();
+		} catch (SQLException e) {
+			throw new MyDictionaryException("Cannot load cache", e);
+		}
 	}
 	
 	public String[] getWords() {
-		return w;
+		return words;
 	}
 	
 	public String getMeaning(String word) {
-		return words.get(word);
+		return wordsWithMeanings.get(word);
 	}
 	
-	public void saveWord(String word, String meaning) {
-		if (words.containsKey(word)) {
+	public void saveWord(String word, String meaning) throws SQLException {
+		if (wordsWithMeanings.containsKey(word)) {
 			DBConnection.editWord(word, meaning);
 		} else {
 			DBConnection.addWord(word, meaning);
 		}
-		words = DBConnection.getWordsWithMeanings();
-		w = DBConnection.getWords();
+		wordsWithMeanings = DBConnection.getWordsWithMeanings();
+		words = DBConnection.getWords();
 	}
 	
 	public String searchWord(String word) {
 		try {
 			String response = sendRequest(word);
 			String[] split = response.split("\"");
-			System.out.println(response);
 			if (split.length > 1) return split[1];
-			else return null;
 		}catch (Exception e) {
-			return null;
 		}
+		return null;
+
 	}
 	
 	private String sendRequest(String word) throws Exception {

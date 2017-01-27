@@ -3,10 +3,14 @@ package org.pesho.mydictionary;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,6 +21,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.pesho.mydictionary.db.DBConnection;
 import org.pesho.mydictionary.db.WordsCache;
 
 public class TestWord extends JFrame {
@@ -36,10 +41,20 @@ public class TestWord extends JFrame {
 	private JButton save = new JButton("Add");
 
 	public TestWord() {
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				new MyDictionary().setVisible(true);
+				super.windowClosing(e);
+			}
+		});
 		setSize(400, 200);
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 
+		clear();
+		c.insets = new Insets(5, 5, 5, 5);
 		c.anchor = GridBagConstraints.NORTH;
 		c.gridx = 0; c.gridy = 0;
 		c.weightx = 1; c.weighty = 1;
@@ -60,22 +75,31 @@ public class TestWord extends JFrame {
 		add(start, c);
 		
 		c.gridx = 2;
+		exit.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new MyDictionary().setVisible(true);
+				dispose();
+			}
+		});
 		add(exit, c);
 		
 		c.gridx =3; c.gridy=0;
-		add(new JLabel("Correct:"), c);
+		add(new JLabel("Correct"), c);
 
 		c.gridy = 1;
 		correct.setEditable(false);
 		add(correct, c);
 		
 		c.gridx = 4; c.gridy=0;
-		add(new JLabel("Wrong:"), c);
+		add(new JLabel("Wrong"), c);
 
 		c.gridy = 1;
 		wrong.setEditable(false);
 		add(wrong, c);
-		
+
+		c.weighty=2; c.gridwidth=2;
 		c.gridx = 0; c.gridy=2;
 		add(new JLabel("Word to translate:"), c);
 
@@ -101,16 +125,22 @@ public class TestWord extends JFrame {
 		word.setEditable(false);
 		add(word, c);
 		
-		c.gridx = 0; c.gridy=3;
+		c.gridx = 0; c.gridy=3; c.gridwidth=2;
 		add(new JLabel("Meaning:"), c);
 
-		c.gridx=2;
+		c.gridx=2; c.gridwidth=3;
+		meaning.setEditable(false);
 		add(meaning, c);
 	}
 	
 	private void startTest() {
+		start.setEnabled(false);
 		wordsCount.setEditable(false);
 		test = new Test(Integer.parseInt(wordsCount.getText()));
+		wordsCount.setText(String.valueOf(test.getWordsCount()));
+		meaning.setEditable(true);
+		correct.setText("0");
+		wrong.setText("0");
 		setWord();
 	}
 	
@@ -133,9 +163,18 @@ public class TestWord extends JFrame {
 		if (!test.isFinished()) {
 			word.setText(test.getNextWord());
 		} else {
-			word.setText("");
-			word.setEditable(false);
+			clear();
 		}
+	}
+	
+	private void clear() {
+		word.setText("");
+		word.setEditable(false);
+		meaning.setText("");
+		meaning.setEditable(false);
+		wordsCount.setText(WordsCache.getInstance().getWords().length+"");
+		wordsCount.setEditable(true);
+		start.setEnabled(true);
 	}
 	
 	private Test test;
