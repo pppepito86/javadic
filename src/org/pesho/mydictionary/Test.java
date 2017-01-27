@@ -3,6 +3,7 @@ package org.pesho.mydictionary;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.pesho.mydictionary.db.WordsCache;
 
@@ -38,7 +39,17 @@ public class Test {
 	}
 	
 	public boolean isCorrect(String meaning) {
-		return WordsCache.getInstance().getMeaning(words[current]).equals(meaning.trim());
+		String meanings = WordsCache.getInstance().getMeaning(words[current]);
+		StringTokenizer st = new StringTokenizer(meanings, " \t\n\r\f;,");
+		boolean success = false;
+		while (st.hasMoreTokens()) {
+			if (st.nextToken().trim().equals(meaning)) {
+				success = true;
+				break;
+			}
+		}
+		WordsCache.getInstance().addTestResult(words[current], success);
+		return success;
 	}
 
 	public boolean isFinished() {

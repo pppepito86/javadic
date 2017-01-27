@@ -2,7 +2,6 @@ package org.pesho.mydictionary;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,18 +9,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
-import org.pesho.mydictionary.db.DBConnection;
 import org.pesho.mydictionary.db.WordsCache;
 
 public class TestWord extends JFrame {
@@ -31,14 +24,11 @@ public class TestWord extends JFrame {
 	private JTextField wordsCount = new JTextField();
 	private JButton start = new JButton("Start");
 	private JButton exit = new JButton("Exit");
-	private JLabel correctLabel = new JLabel("Correct");
-	private JLabel wrongLabel = new JLabel("Wrong");
 	private JTextField correct = new JTextField("0");
 	private JTextField wrong = new JTextField("0");
 
 	private JTextField word = new JTextField();
 	private JTextField meaning = new JTextField();
-	private JButton save = new JButton("Add");
 
 	public TestWord() {
 		setDefaultCloseOperation(HIDE_ON_CLOSE);

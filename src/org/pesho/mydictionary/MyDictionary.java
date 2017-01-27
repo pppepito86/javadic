@@ -128,7 +128,7 @@ public class MyDictionary extends JFrame {
 		menuBar.add(menuFile);
 		
 		JMenu menuWord = new JMenu("Word");
-		JMenuItem menuItemAdd = new JMenuItem("Add");
+		JMenuItem menuItemAdd = new JMenuItem("Modify");
 		menuItemAdd.addActionListener(new ActionListener() {
 			
 			@Override
@@ -138,7 +138,6 @@ public class MyDictionary extends JFrame {
 			}
 		});
 		menuWord.add(menuItemAdd);
-		menuWord.add(new JMenuItem("delete"));
 		menuBar.add(menuWord);
 		
 		JMenu menuTest = new JMenu("Test");

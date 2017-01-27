@@ -1,13 +1,11 @@
 package org.pesho.mydictionary.db;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import org.pesho.mydictionary.entity.Word;
 import org.pesho.mydictionary.exceptions.MyDictionaryException;
+import org.pesho.mydictionary.log.Logger;
 
 public class WordsCache {
 	
@@ -18,11 +16,12 @@ public class WordsCache {
 	}
 	
 	private String[] words;
-	private HashMap<String, String> wordsWithMeanings;
+	private HashMap<String, Word> wordsMap;
+
 	
 	private WordsCache() {
 		try {
-			wordsWithMeanings = DBConnection.getWordsWithMeanings();
+			wordsMap = DBConnection.getWordsMap();
 			words = DBConnection.getWords();
 		} catch (SQLException e) {
 			throw new MyDictionaryException("Cannot load cache", e);
@@ -34,56 +33,36 @@ public class WordsCache {
 	}
 	
 	public String getMeaning(String word) {
-		return wordsWithMeanings.get(word);
+		return wordsMap.get(word).getMeaning();
 	}
 	
 	public void saveWord(String word, String meaning) throws SQLException {
-		if (wordsWithMeanings.containsKey(word)) {
-			DBConnection.editWord(word, meaning);
-		} else {
+		if (wordsMap.containsKey(word)) {
+			if (meaning.length() != 0) {
+				DBConnection.editWord(word, meaning);
+				wordsMap.get(word).setMeaning(meaning);
+			} else {
+				DBConnection.deleteWord(word);
+				wordsMap.remove(word);
+				words = DBConnection.getWords();
+			}
+		} else if (meaning.length() != 0) {
 			DBConnection.addWord(word, meaning);
+			wordsMap = DBConnection.getWordsMap();
+			words = DBConnection.getWords();
+		} else {
+			throw new MyDictionaryException("Meaning should not be empty");
 		}
-		wordsWithMeanings = DBConnection.getWordsWithMeanings();
-		words = DBConnection.getWords();
 	}
 	
-	public String searchWord(String word) {
+	public boolean addTestResult(String word, boolean success) {
 		try {
-			String response = sendRequest(word);
-			String[] split = response.split("\"");
-			if (split.length > 1) return split[1];
-		}catch (Exception e) {
+			DBConnection.addTestResult(wordsMap.get(word).getId(), success);
+			return true;
+		} catch (SQLException e) {
+			Logger.error(e);
+			return false;
 		}
-		return null;
-
 	}
 	
-	private String sendRequest(String word) throws Exception {
-		String url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=bg&dt=t&q="+word;
-
-		URL obj = new URL(url);
-		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-		// optional default is GET
-		con.setRequestMethod("GET");
-
-		//add request header
-		con.setRequestProperty("User-Agent", "Mozilla/5.0");
-
-		int responseCode = con.getResponseCode();
-		System.out.println("\nSending 'GET' request to URL : " + url);
-		System.out.println("Response Code : " + responseCode);
-
-		BufferedReader in = new BufferedReader(
-		        new InputStreamReader(con.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();
-
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();
-		return response.toString();
-	}
-
 }

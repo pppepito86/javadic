@@ -20,15 +20,16 @@ import javax.swing.event.DocumentListener;
 
 import org.pesho.mydictionary.db.WordsCache;
 import org.pesho.mydictionary.log.ErrorDialog;
+import org.pesho.mydictionary.translate.GoogleTranslator;
 
 public class AddWord extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextField word = new JTextField();
-	private JTextArea meaning = new JTextArea();
-	private JLabel info = new JLabel("");
-	private JButton save = new JButton("Add");
+	private JTextField wordTextField;
+	private JTextArea meaningTextArea = new JTextArea();
+	private JLabel infoLabel = new JLabel("");
+	private JButton saveButton;
 
 	public AddWord() {
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
@@ -39,6 +40,7 @@ public class AddWord extends JFrame {
 				super.windowClosing(e);
 			}
 		});
+		
 		setSize(400, 400);
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -51,8 +53,33 @@ public class AddWord extends JFrame {
 		c.fill = GridBagConstraints.BOTH;
 		add(new JLabel("Word:"), c);
 		c.gridx = 1;
-		add(word, c);
-		word.getDocument().addDocumentListener(new DocumentListener() {
+		add(createWordTextField(), c);
+
+		c.gridy = 1;
+		c.gridx = 1;
+		c.weighty = 0.1;
+		add(infoLabel, c);
+		c.gridy = 2;
+		c.gridx = 0;
+		add(new JLabel("Meaning:"), c);
+		c.gridx = 1;
+		c.weighty = 5;
+		c.weightx = 4;
+		add(meaningTextArea, c);
+
+		c.gridy = 3;
+		c.gridx = 0;
+		c.weighty = 0.5;
+		c.weightx = 1;
+		c.gridwidth=3;
+		c.insets = new Insets(10, 80, 10, 80);
+		add(createSaveButton(), c);
+
+	}
+	
+	private JTextField createWordTextField() {
+		wordTextField = new JTextField();
+		wordTextField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				update();
@@ -71,54 +98,42 @@ public class AddWord extends JFrame {
 			private void update() {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						String word = AddWord.this.word.getText();
+						String word = AddWord.this.wordTextField.getText();
 						if (word.length() == 0) {
-							info.setText(" ");
-							meaning.setText("");
+							infoLabel.setText(" ");
+							meaningTextArea.setText("");
 							return;
 						}
 						String meaning = WordsCache.getInstance().getMeaning(word);
 						if (meaning != null) {
-							info.setText("* edit");
-							AddWord.this.save.setText("Edit");
+							infoLabel.setText("* edit");
+							AddWord.this.saveButton.setText("Edit");
 						} else {
-							AddWord.this.save.setText("Add");
-							meaning = WordsCache.getInstance().searchWord(word);
-							info.setText("* add");
+							AddWord.this.saveButton.setText("Add");
+							meaning = GoogleTranslator.translate(word);
+							infoLabel.setText("* add");
 						}
 						if (meaning != null) {
-							AddWord.this.meaning.setText(meaning);
+							AddWord.this.meaningTextArea.setText(meaning);
 						}
 					}
 				});
 			}
 		});
-		c.gridy = 1;
-		c.gridx = 1;
-		c.weighty = 0.1;
-		add(info, c);
-		c.gridy = 2;
-		c.gridx = 0;
-		add(new JLabel("Meaning:"), c);
-		c.gridx = 1;
-		c.weighty = 5;
-		c.weightx = 4;
-		add(meaning, c);
-
-		c.gridy = 3;
-		c.gridx = 0;
-		c.weighty = 0.5;
-		c.weightx = 1;
-		c.gridwidth=3;
-		c.insets = new Insets(10, 80, 10, 80);
-		add(save, c);
-		save.addActionListener(new ActionListener() {
+		return wordTextField;
+	}
+	
+	private JButton createSaveButton() {
+		saveButton = new JButton("Add");
+		saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String word = AddWord.this.word.getText().trim();
-				String meaning = AddWord.this.meaning.getText().trim();
-				if (word.length() == 0 || meaning.length() == 0)
+				String word = AddWord.this.wordTextField.getText().trim();
+				String meaning = AddWord.this.meaningTextArea.getText().trim();
+				if (word.length() == 0) {
+					ErrorDialog.show("Word should not be empty");
 					return;
+				}
 				try {
 					WordsCache.getInstance().saveWord(word, meaning);
 				} catch (SQLException exc) {
@@ -128,6 +143,20 @@ public class AddWord extends JFrame {
 				new MyDictionary().setVisible(true);
 			}
 		});
+		return saveButton;
 	}
 
 }
+
+/*
+create table tests(
+	id int(11) NOT NULL AUTO_INCREMENT,
+	word_id int(11),
+	success boolean,
+	time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	primary key (id)) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+	
+ 
+ 
+
+*/
