@@ -39,6 +39,10 @@ public class Test {
 	}
 	
 	public boolean isCorrect(String meaning) {
+		return isCorrect(meaning, false);
+	}
+	
+	public boolean isCorrect(String meaning, boolean finalScore) {
 		String meanings = WordsCache.getInstance().getMeaning(words[current]);
 		StringTokenizer st = new StringTokenizer(meanings, " \t\n\r\f;,");
 		boolean success = false;
@@ -48,7 +52,9 @@ public class Test {
 				break;
 			}
 		}
-		WordsCache.getInstance().addTestResult(words[current], success);
+		if (finalScore) {
+			WordsCache.getInstance().addTestResult(words[current], success);
+		}
 		return success;
 	}
 

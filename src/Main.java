@@ -15,6 +15,7 @@ public class Main {
 		} catch (Exception e) {
 			Logger.error(e);
 			ErrorDialog.show(e);
+			System.exit(1);
 		}
 	}
 

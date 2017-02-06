@@ -33,7 +33,11 @@ public class WordsCache {
 	}
 	
 	public String getMeaning(String word) {
-		return wordsMap.get(word).getMeaning();
+		Word w = wordsMap.get(word);
+		if (w == null) {
+			return null;
+		}
+		return w.getMeaning();
 	}
 	
 	public void saveWord(String word, String meaning) throws SQLException {

@@ -102,7 +102,7 @@ public class TestWord extends JFrame {
 			
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER || (test.isCorrect(meaning.getText()))) {
 					checkWord();
 					setWord();
 				}
@@ -117,6 +117,9 @@ public class TestWord extends JFrame {
 		
 		c.gridx = 0; c.gridy=3; c.gridwidth=2;
 		add(new JLabel("Meaning:"), c);
+
+		word.setFont(word.getFont().deriveFont(20F));
+		meaning.setFont(meaning.getFont().deriveFont(20F));
 
 		c.gridx=2; c.gridwidth=3;
 		meaning.setEditable(false);
@@ -136,7 +139,7 @@ public class TestWord extends JFrame {
 	
 	private void checkWord() {
 		String m = meaning.getText();
-		if (test.isCorrect(m)) {
+		if (test.isCorrect(m, true)) {
 			increase(correct);
 		} else {
 			increase(wrong);

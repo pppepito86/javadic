@@ -87,6 +87,7 @@ public class MyDictionary extends JFrame {
 				}
 			}
 		});
+		wordTextField.setFont(wordTextField.getFont().deriveFont(22F));
 		return wordTextField;
 	}
 	
@@ -104,12 +105,14 @@ public class MyDictionary extends JFrame {
 				});
 			}
 		});
+		wordsList.setFont(wordsList.getFont().deriveFont(20F));
 		return wordsList;
 	}
 	
 	public JTextArea createMeaningTextArea() {
 		meaningTextArea = new JTextArea();
 		meaningTextArea.setEditable(false);
+		meaningTextArea.setFont(meaningTextArea.getFont().deriveFont(20F));
 		return meaningTextArea;
 	}
 	

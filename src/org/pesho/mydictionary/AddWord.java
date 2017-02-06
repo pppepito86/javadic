@@ -65,6 +65,7 @@ public class AddWord extends JFrame {
 		c.gridx = 1;
 		c.weighty = 5;
 		c.weightx = 4;
+		meaningTextArea.setFont(wordTextField.getFont().deriveFont(20F));
 		add(meaningTextArea, c);
 
 		c.gridy = 3;
@@ -79,6 +80,7 @@ public class AddWord extends JFrame {
 	
 	private JTextField createWordTextField() {
 		wordTextField = new JTextField();
+		wordTextField.setFont(wordTextField.getFont().deriveFont(22F));
 		wordTextField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
