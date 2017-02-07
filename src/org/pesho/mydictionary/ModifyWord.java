@@ -36,8 +36,9 @@ public class ModifyWord extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				new MyDictionary().setVisible(true);
 				super.windowClosing(e);
+				new MyDictionary().setVisible(true);
+				dispose();
 			}
 		});
 		
@@ -108,10 +109,8 @@ public class ModifyWord extends JFrame {
 						}
 						String meaning = WordsCache.getInstance().getMeaning(word);
 						if (meaning != null) {
-							infoLabel.setText("* edit");
-							ModifyWord.this.saveButton.setText("Edit");
+							infoLabel.setText("* edit/delete");
 						} else {
-							ModifyWord.this.saveButton.setText("Add");
 							meaning = GoogleTranslator.translate(word);
 							infoLabel.setText("* add");
 						}
@@ -126,7 +125,7 @@ public class ModifyWord extends JFrame {
 	}
 	
 	private JButton createSaveButton() {
-		saveButton = new JButton("Add");
+		saveButton = new JButton("Modify");
 		saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

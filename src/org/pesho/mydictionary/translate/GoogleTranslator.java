@@ -28,7 +28,6 @@ public class GoogleTranslator {
 	private static String sendRequest(String word) throws Exception {
 		URL url = new URL(String.format(URL_FORMAT, word));
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
-		//con.setRequestMethod("GET");
 		con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
 		int responseCode = con.getResponseCode();

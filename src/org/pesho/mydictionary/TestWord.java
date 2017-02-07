@@ -35,8 +35,9 @@ public class TestWord extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				new MyDictionary().setVisible(true);
 				super.windowClosing(e);
+				new MyDictionary().setVisible(true);
+				dispose();
 			}
 		});
 		setSize(400, 200);

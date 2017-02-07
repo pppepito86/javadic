@@ -23,6 +23,9 @@ public class DBConnection {
 
 	public static String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
 	public static String DB_URL = "jdbc:mysql://localhost/mydictionary?characterEncoding=UTF-8";
+	
+	private static String DB_USER = "root";
+	private static String DB_PASS = "password";
 
 	public static void testConnection() {
 		try {
@@ -38,7 +41,7 @@ public class DBConnection {
 
 	private static Connection getConnection() {
 		try {
-			return DriverManager.getConnection(DB_URL, "root", "password");
+			return DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
 		} catch (Exception e) {
 			throw new MyDictionaryException("Cannot get database connection", e);
 		}
