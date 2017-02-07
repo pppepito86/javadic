@@ -9,7 +9,7 @@ My dictinary is ideal for learning foreign words. The user should enter all word
   * To delete word again we type the word and its meaning appears. Then we should clear the meaning and press the button.
 * Test screen allows us to test our knowledge. We can select how many words do we want to test and then start the test. The program will select random words for us. If we guess a meaning the test will automatically move on to the next word. If we don't know the word we should press enter to continue to the next word.
 
-## How to run it
+## How to run MyDictionary
 
 ### Prerequisities
 * mysql
