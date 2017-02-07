@@ -13,7 +13,7 @@ My dictinary is ideal for learning foreign words. The user should enter all word
 
 ### Prerequisities
 * mysql
-* java 8 & eclipse
+* eclipse & java
 
 ### Setup
 * Import javadic project in eclipse
