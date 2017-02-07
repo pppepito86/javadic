@@ -136,7 +136,7 @@ public class MyDictionary extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new AddWord().setVisible(true);
+				new ModifyWord().setVisible(true);
 				dispose();
 			}
 		});

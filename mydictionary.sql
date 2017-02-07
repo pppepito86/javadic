@@ -29,19 +29,9 @@ CREATE TABLE `tests` (
   `word_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_bx3dwev9ooy15w2e9par4dbf9` (`word_id`),
-  CONSTRAINT `FK_bx3dwev9ooy15w2e9par4dbf9` FOREIGN KEY (`word_id`) REFERENCES `words` (`id`)
+  CONSTRAINT `FK_bx3dwev9ooy15w2e9par4dbf9` FOREIGN KEY (`word_id`) REFERENCES `words` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tests`
---
-
-LOCK TABLES `tests` WRITE;
-/*!40000 ALTER TABLE `tests` DISABLE KEYS */;
-INSERT INTO `tests` VALUES (1,'\0',NULL,3),(2,'\0',NULL,2),(3,'\0',NULL,2),(4,'\0',NULL,2),(5,'',NULL,3),(6,'',NULL,5),(7,'',NULL,2),(8,'',NULL,3),(9,'',NULL,2),(10,'\0',NULL,5),(11,'\0',NULL,5);
-/*!40000 ALTER TABLE `tests` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `words`
@@ -58,15 +48,6 @@ CREATE TABLE `words` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `words`
---
-
-LOCK TABLES `words` WRITE;
-/*!40000 ALTER TABLE `words` DISABLE KEYS */;
-INSERT INTO `words` VALUES (2,'igraq','play'),(3,'уча,ucha','study'),(5,'уча','learn');
-/*!40000 ALTER TABLE `words` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

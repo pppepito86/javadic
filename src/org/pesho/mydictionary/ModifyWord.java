@@ -22,7 +22,7 @@ import org.pesho.mydictionary.db.WordsCache;
 import org.pesho.mydictionary.log.ErrorDialog;
 import org.pesho.mydictionary.translate.GoogleTranslator;
 
-public class AddWord extends JFrame {
+public class ModifyWord extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
@@ -31,7 +31,7 @@ public class AddWord extends JFrame {
 	private JLabel infoLabel = new JLabel("");
 	private JButton saveButton;
 
-	public AddWord() {
+	public ModifyWord() {
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -100,7 +100,7 @@ public class AddWord extends JFrame {
 			private void update() {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						String word = AddWord.this.wordTextField.getText();
+						String word = ModifyWord.this.wordTextField.getText();
 						if (word.length() == 0) {
 							infoLabel.setText(" ");
 							meaningTextArea.setText("");
@@ -109,14 +109,14 @@ public class AddWord extends JFrame {
 						String meaning = WordsCache.getInstance().getMeaning(word);
 						if (meaning != null) {
 							infoLabel.setText("* edit");
-							AddWord.this.saveButton.setText("Edit");
+							ModifyWord.this.saveButton.setText("Edit");
 						} else {
-							AddWord.this.saveButton.setText("Add");
+							ModifyWord.this.saveButton.setText("Add");
 							meaning = GoogleTranslator.translate(word);
 							infoLabel.setText("* add");
 						}
 						if (meaning != null) {
-							AddWord.this.meaningTextArea.setText(meaning);
+							ModifyWord.this.meaningTextArea.setText(meaning);
 						}
 					}
 				});
@@ -130,8 +130,8 @@ public class AddWord extends JFrame {
 		saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String word = AddWord.this.wordTextField.getText().trim();
-				String meaning = AddWord.this.meaningTextArea.getText().trim();
+				String word = ModifyWord.this.wordTextField.getText().trim();
+				String meaning = ModifyWord.this.meaningTextArea.getText().trim();
 				if (word.length() == 0) {
 					ErrorDialog.show("Word should not be empty");
 					return;
@@ -149,16 +149,3 @@ public class AddWord extends JFrame {
 	}
 
 }
-
-/*
-create table tests(
-	id int(11) NOT NULL AUTO_INCREMENT,
-	word_id int(11),
-	success boolean,
-	time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	primary key (id)) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
-	
- 
- 
-
-*/
