@@ -7,7 +7,7 @@
 ## Setup
 * Import javadic project in eclipse
 * Create mydictionary database
-* Create the tables -> `mysql -u username -p database_name < mydictionary.sql`
+* Create the tables -> `mysql -u username -p mydictionary < mydictionary.sql`
 * Change database connection settings in `DBConnection` class
 
 ## Run
